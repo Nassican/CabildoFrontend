@@ -1,7 +1,7 @@
 import Navbar from "@/components/ui/Navbar";
 import { SidebarMenu } from "@/components/ui/SideBar";
 
-export default function DashboardLayout({
+export default function HomeLayout({
   children,
 }: {
   children: React.ReactNode;

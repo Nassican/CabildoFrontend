@@ -20,6 +20,19 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         try {
+          // const res = await fetch(
+          //   `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+          //   {
+          //     method: "POST",
+          //     body: JSON.stringify({
+          //       num_documento: credentials?.num_documento,
+          //       password: credentials?.password,
+          //     }),
+          //     headers: { "Content-Type": "application/json" },
+          //   }
+          // );
+          // const user = await res.json();
+
           const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
             num_documento: credentials?.num_documento,
             password: credentials?.password,
@@ -59,7 +72,7 @@ const handler = NextAuth({
     },
   },
   pages: {
-    signIn: "/login",
+    signIn: "/",
   },
 });
 
