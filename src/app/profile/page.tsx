@@ -15,11 +15,13 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TriangleAlertIcon } from "lucide-react";
+import { useUserResources } from "@/hooks/useUserResources";
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<UserInterface | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { userResourcesMaped } = useUserResources();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -60,23 +62,23 @@ const ProfilePage = () => {
     return <p>Cargando...</p>;
   }
 
+  console.log(userResourcesMaped);
+
   //TODO ARREGLAR PAGINA CUANDO NO SE ENCUENTRA EL USUARIO/ERROR AL OBTENER DATOS/EL USUARIO NO TIENE PERMISOS
   //TODO: PASAR PAGINA DE ERROR A COMPONENTE CON PROPS
   if (error) {
     return (
-        <div className="flex flex-col items-center justify-center mt-4">
-          <div className="bg-red-100 dark:bg-red-900 rounded-lg p-8 text-center max-w-md w-full">
-            <div className="flex items-center justify-center mb-4">
-              <TriangleAlertIcon className="h-10 w-10 text-red-500 dark:text-red-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-red-900 dark:text-red-100 mb-2">
-              Oops, algo salió mal!
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              {error}
-            </p>
+      <div className="flex flex-col py-10 items-center justify-center">
+        <div className="bg-red-100 dark:bg-red-900 rounded-lg p-8 text-center max-w-md w-full">
+          <div className="flex items-center justify-center mb-4">
+            <TriangleAlertIcon className="h-10 w-10 text-red-500 dark:text-red-400" />
           </div>
+          <h3 className="text-2xl font-bold text-red-900 dark:text-red-100 mb-2">
+            Oops, algo salió mal!
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
         </div>
+      </div>
     );
   }
 
@@ -107,6 +109,14 @@ const ProfilePage = () => {
                   </CardDescription>
                 ))}
               </Card>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Recursos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div>{userResourcesMaped}</div>
             </CardContent>
           </Card>
         </div>

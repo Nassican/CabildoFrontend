@@ -3,6 +3,7 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "./button";
+import dynamic from "next/dynamic";
 import { ModeToggle } from "./ThemeToggleButton";
 import {
   DropdownMenu,
@@ -22,8 +23,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SidebarMenu } from "./SideBar";
-import { LogOut, Menu,  User } from "lucide-react";
+import { SidebarMenu } from "./Sidebar/SideBar";
+import { LogOut, Menu, MountainIcon, User } from "lucide-react";
+
+
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -46,16 +49,16 @@ const Navbar = () => {
                     <SheetTitle className="text-left text-xl font-bold ml-3 text-black dark:text-slate-100">
                       Menu
                     </SheetTitle>
-                    <SheetDescription>
+                    <div>
                       <SidebarMenu />
-                    </SheetDescription>
+                    </div>
                   </SheetHeader>
                 </SheetContent>
               </Sheet>
             </div>
-            <MountainIcon className="h-8 w-8 mr-4 ml-4 text-black dark:text-white" />
+            <MountainIcon className="h-8 w-8 mr-2 ml-2 text-black dark:text-white" />
             <a
-              className="flex-none text-xl ml-4 font-semibold text-black dark:text-white sm:ml-0 sm:mr-4"
+              className="flex-none text-xl font-semibold text-black dark:text-white"
               href="/dashboard"
             >
               Cabildo
@@ -70,14 +73,12 @@ const Navbar = () => {
                       <span>{session.user.nombres} </span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56 ">
+                  <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        className="hover:cursor-pointer"
-                      >
-                        <Link href="/profile" className="flex items-center">
+                      <DropdownMenuItem className="hover:cursor-pointer w-full">
+                        <Link href="/profile" className="flex items-center w-full">
                           <User size={15} className="mr-2 h-4 w-4" />
                           <span>Perfil</span>
                         </Link>
@@ -86,11 +87,10 @@ const Navbar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => signOut()}
-                      className=" text-red-500 hover:cursor-pointer"
+                      className="text-red-500 hover:cursor-pointer w-full"
                     >
                       <LogOut size={15} className="mr-2 h-4 w-4" />
                       <span>Cerrar Sesión</span>
-                      <DropdownMenuShortcut className="dark:text-slate-100 text-slate-950" >⇧⌘P</DropdownMenuShortcut>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -112,45 +112,5 @@ const Navbar = () => {
     </header>
   );
 };
-
-function MenuIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-  );
-}
-
-function MountainIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
-  );
-}
 
 export default Navbar;

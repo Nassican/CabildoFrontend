@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SessionAuthProvider from '../context/SessionAuthProvider';
-import Navbar from "@/components/ui/Navbar";
+import SessionAuthProvider from "../context/SessionAuthProvider";
 import { Toaster } from "@/components/ui/toaster";
 import ThemeProvider from "@/context/ThemeProvider";
 
@@ -20,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="{inter.className}" suppressHydrationWarning={true}>
+      <body className="{inter.className}">
         <main>
           <SessionAuthProvider>
             <ThemeProvider
@@ -30,7 +29,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <main>{children}</main>
-              <Toaster/>
+              <Toaster />
             </ThemeProvider>
           </SessionAuthProvider>
         </main>

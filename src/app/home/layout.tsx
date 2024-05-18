@@ -1,5 +1,5 @@
 import Navbar from "@/components/ui/Navbar";
-import { SidebarMenu } from "@/components/ui/SideBar";
+import { SidebarMenu } from "@/components/ui/Sidebar/SideBar";
 
 export default function HomeLayout({
   children,
@@ -9,11 +9,13 @@ export default function HomeLayout({
   return (
     <div>
       <Navbar />
-      <div className="flex">
-        <div className="hidden sm:block">
+      <div className="flex ">
+        <div className="hidden sm:block fixed">
           <SidebarMenu />
         </div>
-        <main className="w-full p-4">{children}</main>
+        <main className="w-full p-4 overflow-auto ml-0 sm:ml-36 lg:ml-48">
+          <div>{children}</div>
+        </main>
       </div>
     </div>
   );
