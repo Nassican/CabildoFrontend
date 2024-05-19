@@ -3,6 +3,15 @@
 import Navbar from "@/components/ui/Navbar";
 import { SidebarMenu } from "@/components/Sidebar/SideBar";
 import React, { useEffect, useRef } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { usePathname } from "next/navigation";
 
 export default function ProfileLayout({
   children,
@@ -10,6 +19,9 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   const contentWrapperRef = useRef<HTMLDivElement>(null);
+  const pathName = usePathname();
+
+  console.log(pathName);
 
   useEffect(() => {
     const contentWrapper = contentWrapperRef.current;
@@ -49,6 +61,13 @@ export default function ProfileLayout({
           <SidebarMenu />
         </div>
         <main className="w-full p-4 overflow-auto ml-0 sm:ml-36 lg:ml-48">
+        <Breadcrumb className="py-2">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+                <BreadcrumbLink href={pathName}>Profile</BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
           <div>{children}</div>
         </main>
       </div>

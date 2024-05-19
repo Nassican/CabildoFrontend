@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
-import { useTheme } from "next-themes";
 
 import { toast as toastHot, Toaster as ToasterHot } from "react-hot-toast";
 

@@ -17,12 +17,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TriangleAlertIcon } from "lucide-react";
 import { useUserResources } from "@/hooks/useUserResources";
 import ErrorCustom from "@/components/Errors/ErrorCustom";
+import ProfilePagePrincipal from '../../components/Profile/ProfilePage';
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<UserInterface | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const { userResourcesMaped } = useUserResources();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -63,52 +63,13 @@ const ProfilePage = () => {
     return <p>Cargando...</p>;
   }
 
-  console.log(userResourcesMaped);
-
   if (error) {
     return <ErrorCustom {...{ error }} />;
   }
 
   return (
     <div>
-      <h1>Página de Perfil</h1>
-      {user && (
-        <div>
-          
-          <Card className="mb-4">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Avatar className="mr-2">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                Hola {user.nombres} {user.apellidos} 👋{" "}
-              </CardTitle>
-              <CardDescription>
-                ID: {user.id_usuario} Numero de usuario: {user.num_documento}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Card className="p-4">
-                <CardTitle>Roles</CardTitle>
-                {user.roles.map((rol) => (
-                  <CardDescription key={rol.id}>
-                    ID: {rol.id} Nombre: {rol.name}
-                  </CardDescription>
-                ))}
-              </Card>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Recursos</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div>{userResourcesMaped}</div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
+      <ProfilePagePrincipal/>
     </div>
   );
 };

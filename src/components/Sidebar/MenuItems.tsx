@@ -66,5 +66,4 @@ export const menuItems = [
     icon: <User2 size={15} className="mr-2" />,
     href: "/profile/",
   },
-  
 ];
