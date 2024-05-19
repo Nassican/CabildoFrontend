@@ -23,6 +23,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
+import { Badge } from "../ui/badge";
 
 const ProfilePagePrincipal = () => {
   const { data: session, status } = useSession();
@@ -111,22 +112,13 @@ const ProfilePagePrincipal = () => {
                   defaultValue={user.num_documento}
                 />
               </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
+              <div className="flex flex-col gap-1.5">
                 <Label>Roles</Label>
-                <Accordion type="single" collapsible className="w-full border rounded-md px-3 border-input">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>
-                      <Label>Ver roles</Label>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      {user.roles.map((rol) => (
-                        <div key={rol.id} className="">
-                          <Label>{rol.name}</Label>
-                        </div>
-                      ))}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <div className="flex gap-2 flex-wrap">
+                  {user.roles.map((rol) => (
+                    <Badge key={rol.id} >{rol.name}</Badge>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
