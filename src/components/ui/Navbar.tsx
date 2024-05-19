@@ -23,10 +23,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { SidebarMenu } from "./Sidebar/SideBar";
+import { SidebarMenu } from "../Sidebar/SideBar";
 import { LogOut, Menu, MountainIcon, User } from "lucide-react";
-
-
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -78,7 +76,10 @@ const Navbar = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       <DropdownMenuItem className="hover:cursor-pointer w-full">
-                        <Link href="/profile" className="flex items-center w-full">
+                        <Link
+                          href="/profile"
+                          className="flex items-center w-full"
+                        >
                           <User size={15} className="mr-2 h-4 w-4" />
                           <span>Perfil</span>
                         </Link>

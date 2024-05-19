@@ -1,7 +1,7 @@
 "use client";
 
 import Navbar from "@/components/ui/Navbar";
-import { SidebarMenu } from "@/components/ui/Sidebar/SideBar";
+import { SidebarMenu } from "@/components/Sidebar/SideBar";
 import React, { useEffect, useRef } from "react";
 
 export default function ProfileLayout({

@@ -12,6 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { parse } from "path";
+import { get } from "http";
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -34,6 +36,17 @@ const Dashboard = () => {
 
     setUsers(users);
   };
+
+
+  // mostrar session expires en formato de fecha y hora local
+  const sessionDate: string = session ? session.expires : "";
+
+  const getLocalTime = () => {
+    const localTime = new Date(sessionDate);
+    return localTime;
+  };
+
+  console.log("session",  session);
 
   return (
     <div>

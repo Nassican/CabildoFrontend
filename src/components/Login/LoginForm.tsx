@@ -18,7 +18,7 @@ import { z } from "zod";
 
 import Image from "next/image";
 
-import LogoImageLight from "../media/logo.webp";
+import LogoImageLight from "@/public/images/logo.webp";
 
 const formSchema = z.object({
   num_documento: z.string().max(12, {

@@ -1,5 +1,5 @@
 import Navbar from "@/components/ui/Navbar";
-import { SidebarMenu } from "@/components/ui/Sidebar/SideBar";
+import { SidebarMenu } from "@/components/Sidebar/SideBar";
 
 export default function HomeLayout({
   children,
