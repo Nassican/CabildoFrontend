@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/ui/Navbar";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 
@@ -12,8 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { parse } from "path";
-import { get } from "http";
+import TimeRemaining from '../../components/Utils/TimeRemaining';
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -50,20 +48,19 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className="mb-4 text-lg font-bold">
-        Dashboard
-      </h1>
       {/* <pre>
             <code>{JSON.stringify(session, null, 2)}</code>
         </pre>*/}
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Hola {session?.user.nombres} {session?.user.apellidos} 👋 </CardTitle>
-          <CardDescription>Numero de usuario: {session?.user.num_documento}</CardDescription>
+          <CardTitle>
+            Hola {session?.user.nombres} {session?.user.apellidos} 👋{" "}
+          </CardTitle>
+          <CardDescription>
+            Numero de usuario: {session?.user.num_documento}
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <p>Tu session expira en: {session?.expires}</p>
-        </CardContent>
+        <CardContent><TimeRemaining/></CardContent>
         <CardFooter>
           <Button onClick={getUsers}>Get Users</Button>
         </CardFooter>

@@ -33,14 +33,14 @@ export function SidebarMenu() {
   const uniqueLabels = Array.from(new Set(menus.map((menu) => menu.label)));
 
   return (
-    <div className="h-screen overflow-auto">
+    <div className="h-screen sm:border-r lg:border-r overflow-auto ">
       <ScrollArea className="lg:w-48 sm:w-full rounded-md mb-16 ">
-        <div className="md:px-2 sm:p-2 mt-5 ">
+        <div className="md:px-2 sm:p-2 mt-2">
           {uniqueLabels.map((label, index) => (
             <React.Fragment key={label}>
               {label && (
                 <div
-                  className={`mx-4 mb-3 text-xs text-left tracking-wider font-bold text-slate-700 dark:text-slate-200 ${
+                  className={`mx-4 mb-3 text-left text-base tracking-wider font-bold text-slate-700 dark:text-slate-200 ${
                     index > 0 ? "mt-5" : ""
                   }`}
                 >
@@ -55,14 +55,14 @@ export function SidebarMenu() {
                       <Accordion
                         key={menu.name}
                         type="single"
-                        className="mt-[-10px] mb-[-10px] p-0 font-normal"
+                        className="mt-[-10px] mb-[-10px] p-0 font-medium"
                         collapsible
                       >
                         <AccordionItem
                           value="item-1"
-                          className="m-0 p-0 font-normal"
+                          className="m-0 p-0 font-medium"
                         >
-                          <AccordionTrigger className="w-full flex justify-start text-xs font-normal h-10 bg-background my-2 items-center p-4 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-background rounded-md [&[data-state=open]>svg]:rotate-180">
+                          <AccordionTrigger className="w-full flex justify-start text-sm font-medium h-10 bg-background my-2 items-center p-4 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-background rounded-md [&[data-state=open]>svg]:rotate-180">
                             <a key={menu.name}>
                               <div
                                 className={cn("flex justify-between w-full")}
@@ -79,7 +79,7 @@ export function SidebarMenu() {
                               <Link
                                 key={submenu.name}
                                 href={submenu.href}
-                                className="text-gray-400 mt-0 mb-0 flex text-xs h-10 bg-white dark:bg-background dark:hover:bg-primary dark:hover:text-background my-2 items-center p-4 hover:bg-primary hover:text-white rounded-md"
+                                className="text-gray-400 transition-colors mt-0 mb-0 flex text-sm h-10 bg-white dark:bg-background dark:hover:bg-primary dark:hover:text-background my-2 items-center p-4 hover:bg-primary hover:text-white rounded-md"
                               >
                                 <div className="w-6">{submenu.icon}</div>
                                 {submenu.name}
@@ -92,7 +92,7 @@ export function SidebarMenu() {
                       <div key={menu.name}>
                         <Link
                           href={menu.href}
-                          className="flex text-xs h-10 bg-white dark:bg-background my-2 items-center p-4 hover:bg-primary dark:hover:bg-primary dark:hover:text-background hover:text-white rounded-md"
+                          className="flex text-sm h-10 bg-white dark:bg-background my-2 items-center p-4 hover:bg-primary dark:hover:bg-primary dark:hover:text-background hover:text-white rounded-md"
                         >
                           <div className="w-6">{menu.icon}</div>
                           {menu.name}

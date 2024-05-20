@@ -3,7 +3,6 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "./button";
-import dynamic from "next/dynamic";
 import { ModeToggle } from "./ThemeToggleButton";
 import {
   DropdownMenu,
@@ -25,22 +24,23 @@ import {
 } from "@/components/ui/sheet";
 import { SidebarMenu } from "../Sidebar/SideBar";
 import { LogOut, Menu, MountainIcon, User } from "lucide-react";
+import { Label } from "./label";
 
 const Navbar = () => {
   const { data: session } = useSession();
 
   return (
-    <header className="sticky top-0 z-50 flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white dark:bg-background dark:text-white text-sm py-4 dark:border-gray-600 border-b border-gray-600">
+    <header className="sticky top-0 z-50 flex flex-wrap sm:justify-start sm:flex-nowrap w-full bg-white dark:bg-background dark:text-white text-sm py-4 border-b ">
       <nav
         className="max-w-full w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between"
         aria-label="Global"
       >
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center">
-            <div className="sm:hidden">
+            <div className="sm:hidden flex items-center">
               <Sheet>
-                <SheetTrigger className="text-slate-700 mt-2 dark:text-white">
-                  <Menu />
+                <SheetTrigger className="border border-slate-200 bg-transparent hover:bg-slate-100 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-900 dark:hover:text-slate-200 focus:border-slate-400 dark:focus:border-slate-700 h-10 w-10 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                  <Menu className="h-6 w-6" />
                 </SheetTrigger>
                 <SheetContent side={"left"} className="w-[300px] sm:w-[340px]">
                   <SheetHeader>
@@ -54,13 +54,13 @@ const Navbar = () => {
                 </SheetContent>
               </Sheet>
             </div>
-            <MountainIcon className="h-8 w-8 mr-2 ml-2 text-black dark:text-white" />
-            <a
-              className="flex-none text-xl font-semibold text-black dark:text-white"
-              href="/dashboard"
+            <Link
+              href="/"
+              className="flex flex-center text-xl font-semibold text-black dark:text-white"
             >
-              Cabildo
-            </a>
+              <MountainIcon className="h-8 w-8 mr-2 ml-2 text-black dark:text-white" />
+              <Label className="text-xl font-semibold cursor-pointer">Cabildo</Label>
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             {session?.user ? (
@@ -100,9 +100,6 @@ const Navbar = () => {
               <>
                 <Link href="/login" className="btn btn-primary btn-sm">
                   Login
-                </Link>
-                <Link href="/register" className="btn btn-primary btn-sm">
-                  Register
                 </Link>
               </>
             )}

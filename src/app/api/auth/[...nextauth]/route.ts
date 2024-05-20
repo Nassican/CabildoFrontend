@@ -1,6 +1,7 @@
 import axios from "axios";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { redirect } from "next/dist/server/api-utils";
 
 const handler = NextAuth({
   providers: [
@@ -18,28 +19,15 @@ const handler = NextAuth({
           placeholder: "Contraseña"
         },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         try {
-          // const res = await fetch(
-          //   `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
-          //   {
-          //     method: "POST",
-          //     body: JSON.stringify({
-          //       num_documento: credentials?.num_documento,
-          //       password: credentials?.password,
-          //     }),
-          //     headers: { "Content-Type": "application/json" },
-          //   }
-          // );
-          // const user = await res.json();
-
           const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
             num_documento: credentials?.num_documento,
             password: credentials?.password,
           });
       
           const user = response.data;
-          console.log("ResponseData", response.data);
+          //console.log("ResponseData", response.data);
 
           if (user.error) throw user;
 
@@ -47,16 +35,9 @@ const handler = NextAuth({
           // Manejar la respuesta aquí
         } catch (error: any) {
           if (error.response) {
-            console.log(error.response.data); 
-            // console.log(error.response.status); 
-            // console.log(error.response.headers);
-
             throw error.response.data;
           }
         }
-
-        //const user = await res.json();
-        //console.log("route.ts, user:", user);
         
 
       },
@@ -70,9 +51,21 @@ const handler = NextAuth({
       session.user = token as any;
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      const redirectUrl = new URL(url, baseUrl);
+      const path = redirectUrl.searchParams.get("p");
+      if (path) {
+        return `${baseUrl}${path}`;
+      }
+      return baseUrl
+    }
   },
   pages: {
-    signIn: "/",
+    signIn: "/login",
+  },
+  session: {
+    maxAge: 3600*4, // 4 horas
+    updateAge: 0,
   },
 });
 
