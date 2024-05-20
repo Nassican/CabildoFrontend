@@ -3,21 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { UserInterface } from "@/types/user-profile";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { TriangleAlertIcon } from "lucide-react";
-import { useUserResources } from "@/hooks/useUserResources";
 import ErrorCustom from "@/components/Errors/ErrorCustom";
-import ProfilePagePrincipal from '../../components/Profile/ProfilePage';
+import ProfilePagePrincipal from '../../../components/Profile/ProfilePage';
 
 const ProfilePage = () => {
   const { data: session, status } = useSession();

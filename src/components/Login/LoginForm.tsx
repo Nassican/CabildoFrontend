@@ -84,10 +84,20 @@ const LoginForm = () => {
         return;
       }
 
+      // Obtener la URL solicitada original del parámetro de consulta
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedPage = urlParams.get("p");
+
       toast({
         title: "Inicio de sesión exitoso",
       });
-      router.push("/dashboard");
+
+      // Redirigir al usuario a la página solicitada original
+      if (requestedPage) {
+        router.push(requestedPage);
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       // Manejar errores de validación
       if (error instanceof z.ZodError) {

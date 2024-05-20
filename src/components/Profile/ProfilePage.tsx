@@ -17,12 +17,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ErrorCustom from "@/components/Errors/ErrorCustom";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
 import { Badge } from "../ui/badge";
 
 const ProfilePagePrincipal = () => {
