@@ -1,22 +1,21 @@
-import axios from "axios";
-import NextAuth from "next-auth/next";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { redirect } from "next/dist/server/api-utils";
+import axios, { AxiosError } from 'axios';
+import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
         num_documento: {
-          label: "Username",
-          type: "text",
-          placeholder: "Número de Documento",
+          label: 'Username',
+          type: 'text',
+          placeholder: 'Número de Documento',
         },
-        password: { 
-          label: "Password", 
-          type: "password", 
-          placeholder: "Contraseña"
+        password: {
+          label: 'Password',
+          type: 'password',
+          placeholder: 'Contraseña',
         },
       },
       async authorize(credentials) {
@@ -25,7 +24,7 @@ const handler = NextAuth({
             num_documento: credentials?.num_documento,
             password: credentials?.password,
           });
-      
+
           const user = response.data;
           //console.log("ResponseData", response.data);
 
@@ -33,13 +32,15 @@ const handler = NextAuth({
 
           return user;
           // Manejar la respuesta aquí
-        } catch (error: any) {
-          if (error.response) {
-            throw error.response.data;
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError<{ error: string }>;
+            if (axiosError.response) {
+              throw axiosError.response.data;
+            }
           }
+          throw new Error('Unexpected error');
         }
-        
-
       },
     }),
   ],
@@ -48,23 +49,26 @@ const handler = NextAuth({
       return { ...token, ...user };
     },
     async session({ session, token }) {
-      session.user = token as any;
+      session.user = {
+        ...session.user,
+        ...token,
+      };
       return session;
     },
     async redirect({ url, baseUrl }) {
       const redirectUrl = new URL(url, baseUrl);
-      const path = redirectUrl.searchParams.get("p");
+      const path = redirectUrl.searchParams.get('p');
       if (path) {
         return `${baseUrl}${path}`;
       }
-      return baseUrl
-    }
+      return baseUrl;
+    },
   },
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   session: {
-    maxAge: 3600*4, // 4 horas
+    maxAge: 3600 * 4, // 4 horas
     updateAge: 0,
   },
 });

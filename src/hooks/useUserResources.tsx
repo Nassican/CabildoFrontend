@@ -1,16 +1,11 @@
 // useUserResources.ts
-"use client";
+'use client';
 
-import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import { UserInterface } from '@/types/user-profile';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
-export interface UserInterface {
-  id_usuario: number;
-  num_documento: string;
-  nombres: string;
-  apellidos: string;
-  roles: any[];
-}
+import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
 
 export interface RoleInterface {
   id: number;
@@ -24,74 +19,49 @@ export interface ResourceInterface {
 }
 
 function useUserResources() {
-  const [userResources, setUserResources] = useState<string[]>([]);
-  const [userRoles, setUserRoles] = useState<RoleInterface[]>([]);
-  const [user, setUser] = useState<UserInterface | null>(null);
+  const [, setUser] = useState<UserInterface | null>(null);
   const { data: session } = useSession();
+  const axiosAuth = useAxiosAuth();
 
   useEffect(() => {
     if (!session?.user?.token) return;
 
     const fetchUserResources = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${session.user.token}`,
-            },
-          }
-        );
+        const res = await axiosAuth('/users/me');
 
-        if (!res.ok) {
-          throw new Error("Error al obtener los datos del usuario");
-        }
+        setUser(res.data);
 
-        const userData: UserInterface = await res.json();
-        setUser(userData);
+        // TODO: REALIZAR UNA SOLA PETICION EN LA API PARA OBTENER LOS RECURSOS DEL USUARIO
+        // const rolePromises = userData.roles.map(async (role) => {
+        //   try {
+        //     const roleRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/roles/id/${role.id}`);
+        //     if (!roleRes.ok) {
+        //       throw new Error(`Error al obtener los datos del rol ${role.id}`);
+        //     }
+        //     const roleData: RoleInterface = await roleRes.json();
+        //     return roleData;
+        //   } catch (roleError) {
+        //     console.error(`Error al obtener el rol ${role.id}: `, roleError);
+        //     return null; // Return null if fetching a role fails
+        //   }
+        // });
 
-        const rolePromises = userData.roles.map(async (role) => {
-          try {
-            const roleRes = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/roles/id/${role.id}`
-            );
-            if (!roleRes.ok) {
-              throw new Error(`Error al obtener los datos del rol ${role.id}`);
-            }
-            const roleData: RoleInterface = await roleRes.json();
-            return roleData;
-          } catch (roleError) {
-            console.error(`Error al obtener el rol ${role.id}: `, roleError);
-            return null; // Return null if fetching a role fails
-          }
-        });
+        // const userRoles = (await Promise.all(rolePromises)).filter((role) => role !== null) as RoleInterface[];
+        // setUserRoles(userRoles);
 
-        const userRoles = (await Promise.all(rolePromises)).filter(
-          (role) => role !== null
-        ) as RoleInterface[];
-        setUserRoles(userRoles);
-
-        const resources = userRoles.flatMap((role) =>
-          role.roleRecursos.map((recurso) => recurso.nombre_recurso)
-        );
-        setUserResources(resources);
-      } catch (error: any) {
+        // const resources = userRoles.flatMap((role) => role.roleRecursos.map((recurso) => recurso.nombre_recurso));
+        // setUserResources(resources);
+      } catch (error) {
         console.error(error);
         setUser(null);
       }
     };
 
     fetchUserResources();
-  }, [session?.user?.token]);
+  }, [axiosAuth, session]);
 
-  // Retornar los recursos del usuario sin repetir
-  const userResourcesMaped = Array.from(new Set(userResources));
-
-  return {
-    userResourcesMaped,
-  };
+  return;
 }
 
 export { useUserResources };

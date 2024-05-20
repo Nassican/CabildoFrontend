@@ -1,54 +1,38 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { UserInterface } from "@/types/user-profile";
-import ErrorCustom from "@/components/Errors/ErrorCustom";
-import ProfilePagePrincipal from '../../../components/Profile/ProfilePage';
+import { UserInterface } from '@/types/user-profile';
+import axios, { AxiosError } from 'axios';
+import React, { useEffect, useState } from 'react';
+
+import ErrorCustom from '@/components/Errors/ErrorCustom';
+import ProfilePagePrincipal from '@/components/Profile/ProfilePage';
+
+import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
 
 const ProfilePage = () => {
-  const { data: session, status } = useSession();
-  const [user, setUser] = useState<UserInterface | null>(null);
+  const [, setUser] = useState<UserInterface | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const axiosAuth = useAxiosAuth();
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (status === "loading") {
-        return;
-      }
-
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/me`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${session?.user?.token}`,
-            },
-          }
-        );
-
-        if (!res.ok) {
-          throw new Error("Error al obtener los datos del usuario");
-        }
-
-        const userData = await res.json();
-        setUser(userData);
+        const res = await axiosAuth.get('/users/me');
+        setUser(res.data);
         setError(null);
-      } catch (error: any) {
-        console.error(error);
-        setError(error.message); // Establecer el mensaje de error en el estado
-        setUser(null); // Restablecer el usuario a null en caso de error
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const axiosError = error as AxiosError<{ error: string }>;
+          if (axiosError.response) {
+            throw axiosError.response.data;
+          }
+        }
+        throw new Error('Profile. Unexpected error');
       }
     };
 
     fetchUser();
-  }, [session, status]);
-
-  if (status === "loading") {
-    return <p>Cargando...</p>;
-  }
+  }, [axiosAuth]);
 
   if (error) {
     return <ErrorCustom {...{ error }} />;
@@ -56,7 +40,7 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <ProfilePagePrincipal/>
+      <ProfilePagePrincipal />
     </div>
   );
 };

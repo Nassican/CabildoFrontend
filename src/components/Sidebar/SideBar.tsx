@@ -1,17 +1,15 @@
-"use client";
+'use client';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
-import Link from "next/link";
-import * as React from "react";
-import { menuItems } from "./MenuItems";
+import { Menu } from 'lucide-react';
+import Link from 'next/link';
+import * as React from 'react';
+
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ScrollArea } from '@/components/ui/scroll-area';
+
+import { cn } from '@/lib/utils';
+
+import { menuItems } from './MenuItems';
 
 type Menu = {
   label: string;
@@ -33,15 +31,15 @@ export function SidebarMenu() {
   const uniqueLabels = Array.from(new Set(menus.map((menu) => menu.label)));
 
   return (
-    <div className="h-screen sm:border-r lg:border-r overflow-auto ">
-      <ScrollArea className="lg:w-48 sm:w-full rounded-md mb-16 ">
-        <div className="md:px-2 sm:p-2 mt-2">
+    <div className="h-screen overflow-auto sm:border-r lg:border-r ">
+      <ScrollArea className="mb-16 rounded-md sm:w-full lg:w-48 ">
+        <div className="mt-2 sm:p-2 md:px-2">
           {uniqueLabels.map((label, index) => (
             <React.Fragment key={label}>
               {label && (
                 <div
-                  className={`mx-4 mb-3 text-left text-base tracking-wider font-bold text-slate-700 dark:text-slate-200 ${
-                    index > 0 ? "mt-5" : ""
+                  className={`mx-4 mb-3 text-left text-base font-bold tracking-wider text-slate-700 dark:text-slate-200 ${
+                    index > 0 ? 'mt-5' : ''
                   }`}
                 >
                   {label}
@@ -55,18 +53,13 @@ export function SidebarMenu() {
                       <Accordion
                         key={menu.name}
                         type="single"
-                        className="mt-[-10px] mb-[-10px] p-0 font-medium"
+                        className="mb-[-10px] mt-[-10px] p-0 font-medium"
                         collapsible
                       >
-                        <AccordionItem
-                          value="item-1"
-                          className="m-0 p-0 font-medium"
-                        >
-                          <AccordionTrigger className="w-full flex justify-start text-sm font-medium h-10 bg-background my-2 items-center p-4 hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-background rounded-md [&[data-state=open]>svg]:rotate-180">
+                        <AccordionItem value="item-1" className="m-0 p-0 font-medium">
+                          <AccordionTrigger className="my-2 flex h-10 w-full items-center justify-start rounded-md bg-background p-4 text-sm font-medium hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-background [&[data-state=open]>svg]:rotate-180">
                             <a key={menu.name}>
-                              <div
-                                className={cn("flex justify-between w-full")}
-                              >
+                              <div className={cn('flex w-full justify-between')}>
                                 <div className="flex items-center">
                                   <div className="w-6">{menu.icon}</div>
                                   {menu.name}
@@ -79,7 +72,7 @@ export function SidebarMenu() {
                               <Link
                                 key={submenu.name}
                                 href={submenu.href}
-                                className="text-gray-400 transition-colors mt-0 mb-0 flex text-sm h-10 bg-white dark:bg-background dark:hover:bg-primary dark:hover:text-background my-2 items-center p-4 hover:bg-primary hover:text-white rounded-md"
+                                className="my-2 mb-0 mt-0 flex h-10 items-center rounded-md bg-white p-4 text-sm text-gray-400 transition-colors hover:bg-primary hover:text-white dark:bg-background dark:hover:bg-primary dark:hover:text-background"
                               >
                                 <div className="w-6">{submenu.icon}</div>
                                 {submenu.name}
@@ -92,7 +85,7 @@ export function SidebarMenu() {
                       <div key={menu.name}>
                         <Link
                           href={menu.href}
-                          className="flex text-sm h-10 bg-white dark:bg-background my-2 items-center p-4 hover:bg-primary dark:hover:bg-primary dark:hover:text-background hover:text-white rounded-md"
+                          className="my-2 flex h-10 items-center rounded-md bg-white p-4 text-sm hover:bg-primary hover:text-white dark:bg-background dark:hover:bg-primary dark:hover:text-background"
                         >
                           <div className="w-6">{menu.icon}</div>
                           {menu.name}

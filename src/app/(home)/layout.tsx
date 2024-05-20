@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
+import { ChevronRight } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Fragment } from 'react'; // Asegúrate de importar React
 
-import React from "react"; // Asegúrate de importar React
-import Navbar from "@/components/ui/Navbar";
-import { SidebarMenu } from "@/components/Sidebar/SideBar";
-import { usePathname } from "next/navigation";
+import Navbar from '@/components/Navbar/Navbar';
+import { SidebarMenu } from '@/components/Sidebar/SideBar';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -12,56 +15,67 @@ import {
   BreadcrumbLink,
   BreadcrumbSeparator,
   BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
+} from '@/components/ui/breadcrumb';
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-  }) {
-  
-  const path = usePathname();
-
-  const capitalizeFirstLetter = (string: string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const { status } = useSession();
 
   const generateBreadcrumbs = () => {
-    const segments = path.split("/").filter(Boolean);
+    const segments = pathname.split('/').filter(Boolean);
     return segments.map((segment, index) => {
-      const href = "/" + segments.slice(0, index + 1).join("/");
+      const href = '/' + segments.slice(0, index + 1).join('/');
       const isLast = index === segments.length - 1;
       return (
-        <React.Fragment key={href}>
-          <BreadcrumbItem className="text-lg">
+        <Fragment key={href}>
+          <BreadcrumbItem>
             {isLast ? (
-              <BreadcrumbPage>{capitalizeFirstLetter(segment)}</BreadcrumbPage>
+              <BreadcrumbPage className="capitalize">{segment}</BreadcrumbPage>
             ) : (
-              <BreadcrumbLink href={href}>{segment}</BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                <Link className="capitalize" href={href}>
+                  {segment}
+                </Link>
+              </BreadcrumbLink>
             )}
           </BreadcrumbItem>
-          {!isLast && <BreadcrumbSeparator />}
-        </React.Fragment>
+          {!isLast && (
+            <BreadcrumbSeparator>
+              <ChevronRight />
+            </BreadcrumbSeparator>
+          )}
+        </Fragment>
       );
     });
   };
 
-  console.log(path);
-  
+  if (status === 'loading') return <div>Loading...</div>;
+  const pathnameLength = generateBreadcrumbs().length;
+
   return (
     <div>
       <Navbar />
       <div className="flex ">
-        <div className="hidden sm:block fixed h-screen">
+        <div className="fixed hidden h-screen sm:block">
           <SidebarMenu />
         </div>
-        <main className="w-full p-4 overflow-auto ml-0 sm:ml-36 lg:ml-48">
-          <Breadcrumb className="flex items-center mb-4">
+        <main className="ml-0 w-full overflow-auto p-4 sm:ml-36 lg:ml-48">
+          <Breadcrumb className="mb-4 flex items-center">
             <BreadcrumbList>
-              <BreadcrumbItem className="text-lg">
-                <BreadcrumbLink href="/">Inicio</BreadcrumbLink>
+              <BreadcrumbItem>
+                {pathnameLength === 0 ? (
+                  <BreadcrumbPage className="capitalize">Home</BreadcrumbPage>
+                ) : (
+                  <BreadcrumbLink asChild>
+                    <Link href="/">Home</Link>
+                  </BreadcrumbLink>
+                )}
               </BreadcrumbItem>
-              <BreadcrumbSeparator />
+              {pathnameLength > 0 && (
+                <BreadcrumbSeparator>
+                  <ChevronRight />
+                </BreadcrumbSeparator>
+              )}
               {generateBreadcrumbs()}
             </BreadcrumbList>
           </Breadcrumb>

@@ -1,50 +1,47 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+'use client';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import TimeRemaining from '../../components/Utils/TimeRemaining';
+import axios, { AxiosError } from 'axios';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import TimeRemaining from '@/components/Utils/TimeRemaining';
+
+import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
+
+interface User {
+  id_usuario: number;
+  nombres: string;
+  apellidos: string;
+  num_documento: string;
+}
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
   const [users, setUsers] = useState([]);
+  const axiosAuth = useAxiosAuth();
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return <p>Loading...</p>;
   }
 
   const getUsers = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${session?.user?.token}`,
-      },
-    });
-    const users = await res.json();
-    console.log("users", users);
+    try {
+      const res = await axiosAuth.get('/users');
+      //console.log('users', res.data);
 
-    setUsers(users);
+      setUsers(res.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<{ error: string }>;
+        if (axiosError.response) {
+          throw axiosError.response.data;
+        }
+      }
+      throw new Error('Unexpected error');
+    }
   };
-
-
-  // mostrar session expires en formato de fecha y hora local
-  const sessionDate: string = session ? session.expires : "";
-
-  const getLocalTime = () => {
-    const localTime = new Date(sessionDate);
-    return localTime;
-  };
-
-  console.log("session",  session);
 
   return (
     <div>
@@ -54,24 +51,23 @@ const Dashboard = () => {
       <Card className="mb-4">
         <CardHeader>
           <CardTitle>
-            Hola {session?.user.nombres} {session?.user.apellidos} 👋{" "}
+            Hola {session?.user.nombres} {session?.user.apellidos} 👋{' '}
           </CardTitle>
-          <CardDescription>
-            Numero de usuario: {session?.user.num_documento}
-          </CardDescription>
+          <CardDescription>Numero de usuario: {session?.user.num_documento}</CardDescription>
         </CardHeader>
-        <CardContent><TimeRemaining/></CardContent>
+        <CardContent>
+          <TimeRemaining />
+        </CardContent>
         <CardFooter>
           <Button onClick={getUsers}>Get Users</Button>
         </CardFooter>
       </Card>
       {users.length > 0 && (
         <>
-          {users.map((user: any) => (
+          {users.map((user: User) => (
             <Card key={user.id_usuario} className="mb-4">
               <CardContent>
-                {user.id_usuario}: {user.nombres} {user.apellidos} - NumDoc:{" "}
-                {user.num_documento}
+                {user.id_usuario}: {user.nombres} {user.apellidos} - NumDoc: {user.num_documento}
               </CardContent>
             </Card>
           ))}
