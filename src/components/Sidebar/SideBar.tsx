@@ -1,7 +1,9 @@
 'use client';
 
+import clsx from 'clsx';
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import * as React from 'react';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -27,6 +29,9 @@ type Submenu = {
 
 export function SidebarMenu() {
   const menus: Menu[] = menuItems;
+  const pathName = usePathname();
+  const segmens = pathName.split('/').filter(Boolean);
+  const segment = `/${segmens[0] ? segmens[0] : ''}`;
 
   const uniqueLabels = Array.from(new Set(menus.map((menu) => menu.label)));
 
@@ -57,7 +62,7 @@ export function SidebarMenu() {
                         collapsible
                       >
                         <AccordionItem value="item-1" className="m-0 p-0 font-medium">
-                          <AccordionTrigger className="my-2 flex h-10 w-full items-center justify-start rounded-md bg-background p-4 text-sm font-medium hover:bg-primary hover:text-white dark:hover:bg-primary dark:hover:text-background [&[data-state=open]>svg]:rotate-180">
+                          <AccordionTrigger className="my-2 flex h-10 items-center rounded-md p-4 text-sm text-accent-foreground transition-colors hover:bg-accent hover:text-foreground md:h-9 [&[data-state=open]>svg]:rotate-180">
                             <a key={menu.name}>
                               <div className={cn('flex w-full justify-between')}>
                                 <div className="flex items-center">
@@ -71,8 +76,13 @@ export function SidebarMenu() {
                             {menu.submenu.map((submenu) => (
                               <Link
                                 key={submenu.name}
-                                href={submenu.href}
-                                className="my-2 mb-0 mt-0 flex h-10 items-center rounded-md bg-white p-4 text-sm text-gray-400 transition-colors hover:bg-primary hover:text-white dark:bg-background dark:hover:bg-primary dark:hover:text-background"
+                                href={menu.href}
+                                className={clsx(
+                                  'my-2 flex h-10 items-center rounded-md p-4 text-sm text-accent-foreground transition-colors hover:bg-accent hover:text-foreground md:h-9',
+                                  {
+                                    'bg-accent text-black': segment === menu.href,
+                                  },
+                                )}
                               >
                                 <div className="w-6">{submenu.icon}</div>
                                 {submenu.name}
@@ -85,7 +95,12 @@ export function SidebarMenu() {
                       <div key={menu.name}>
                         <Link
                           href={menu.href}
-                          className="my-2 flex h-10 items-center rounded-md bg-white p-4 text-sm hover:bg-primary hover:text-white dark:bg-background dark:hover:bg-primary dark:hover:text-background"
+                          className={clsx(
+                            'my-2 flex h-10 items-center rounded-md p-4 text-sm text-accent-foreground transition-colors hover:bg-accent hover:text-foreground md:h-9',
+                            {
+                              'bg-accent text-black': segment === menu.href,
+                            },
+                          )}
                         >
                           <div className="w-6">{menu.icon}</div>
                           {menu.name}

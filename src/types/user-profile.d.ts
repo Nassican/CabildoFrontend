@@ -4,10 +4,16 @@ export interface UserInterface {
   nombres: string;
   apellidos: string;
   roles: Roles[];
+  recursos: Recursos[];
 }
 
 interface Roles {
   id: number;
   name: string;
   isactive: boolean;
+}
+
+interface Recursos {
+  id: number;
+  name: string;
 }

@@ -11,13 +11,13 @@ export const menuItems = [
     label: 'Discover',
     name: 'Browse',
     icon: <SquareStack size={15} className="mr-2" />,
-    href: '/',
+    href: '/browse',
   },
   {
     label: 'Discover',
     name: 'Radio',
     icon: <RadioIcon size={15} className="mr-2" />,
-    href: '/',
+    href: '/radio',
   },
   {
     label: 'Library',
@@ -28,17 +28,17 @@ export const menuItems = [
       {
         name: 'Playlist 1',
         icon: <ListVideo size={15} className="mr-2" />,
-        href: '/',
+        href: '/playlist1',
       },
       {
         name: 'Playlist 2',
         icon: <ListVideo size={15} className="mr-2" />,
-        href: '/',
+        href: '/playlist2',
       },
       {
         name: 'Playlist 3',
         icon: <ListVideo size={15} className="mr-2" />,
-        href: '/',
+        href: '/playlist3',
       },
     ],
   },
@@ -46,13 +46,13 @@ export const menuItems = [
     label: 'Library',
     name: 'Songs',
     icon: <Music size={15} className="mr-2" />,
-    href: '/',
+    href: '/songs',
   },
   {
     label: 'Library',
     name: 'Artist',
     icon: <Mic2 size={15} className="mr-2" />,
-    href: '/',
+    href: '/artists',
   },
   {
     label: 'Users',

@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 
 import ErrorCustom from '@/components/Errors/ErrorCustom';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
@@ -32,6 +31,7 @@ const ProfilePagePrincipal = () => {
       try {
         const res = await axiosAuth.get('/users/me');
         setUser(res.data);
+        console.log('res', res.data);
         setError(null);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -63,13 +63,7 @@ const ProfilePagePrincipal = () => {
         <div>
           <Card className="mb-4 max-w-sm">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                Información Personal
-                <Avatar className="mr-2">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </CardTitle>
+              <CardTitle className="flex items-center">Información Personal</CardTitle>
               <CardDescription>
                 ID: {user.id_usuario} Numero de usuario: {user.num_documento}
               </CardDescription>
@@ -87,11 +81,21 @@ const ProfilePagePrincipal = () => {
                 <Label>Número de documento</Label>
                 <Input disabled type="text" id="numDoc" defaultValue={user.num_documento} />
               </div>
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-4">
                 <Label>Roles</Label>
                 <div className="flex flex-wrap gap-2">
                   {user.roles.map((rol) => (
-                    <Badge key={rol.id}>{rol.name}</Badge>
+                    <Badge key={rol.id} className="capitalize">
+                      {rol.name}
+                    </Badge>
+                  ))}
+                </div>
+                <Label>Recursos</Label>
+                <div className="flex flex-wrap gap-2">
+                  {user.recursos.map((recursos) => (
+                    <Badge key={recursos.id} className="capitalize">
+                      {recursos.name}
+                    </Badge>
                   ))}
                 </div>
               </div>
