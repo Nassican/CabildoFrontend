@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 
 import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
 
+import LoadingSpinner from '../LoadingSpinner/Loading';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -48,7 +49,7 @@ const ProfilePagePrincipal = () => {
   }, [axiosAuth, status]);
 
   if (status === 'loading') {
-    return <p>Cargando...</p>;
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -69,15 +70,15 @@ const ProfilePagePrincipal = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
-              <div className="grid w-full max-w-sm items-center gap-1.5">
+              <div className="grid w-full max-w-sm items-center gap-2">
                 <Label>Nombres</Label>
                 <Input type="text" id="apellido" defaultValue={user.nombres} />
               </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
+              <div className="grid w-full max-w-sm items-center gap-2">
                 <Label>Apellidos</Label>
                 <Input type="text" id="apellido" defaultValue={user.apellidos} />
               </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
+              <div className="grid w-full max-w-sm items-center gap-2">
                 <Label>Número de documento</Label>
                 <Input disabled type="text" id="numDoc" defaultValue={user.num_documento} />
               </div>

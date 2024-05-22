@@ -1,8 +1,10 @@
 'use client';
 
+import LogoImageDark from '@/public/images/CabildoLogo.webp';
 import LogoImageLight from '@/public/images/logo.webp';
 import { LockIcon, UserIcon } from 'lucide-react';
 import { signIn } from 'next-auth/react';
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -31,6 +33,8 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
+
+  const currentTheme = useTheme();
 
   const notify = (error: string) => toastHot.error(error);
 
@@ -115,7 +119,7 @@ const LoginForm = () => {
           priority={true}
           className="border-6 rounded-full border-white bg-white p-1 dark:border-slate-600"
           height={170}
-          src={LogoImageLight}
+          src={currentTheme.theme === 'dark' ? LogoImageDark : LogoImageLight}
           style={{
             aspectRatio: '100/100',
             height: '170px',

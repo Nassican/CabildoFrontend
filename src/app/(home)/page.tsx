@@ -4,6 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
+import LoadingSpinner from '@/components/LoadingSpinner/Loading';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import TimeRemaining from '@/components/Utils/TimeRemaining';
@@ -23,7 +24,7 @@ const Dashboard = () => {
   const axiosAuth = useAxiosAuth();
 
   if (status === 'loading') {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   const getUsers = async () => {

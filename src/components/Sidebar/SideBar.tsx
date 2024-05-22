@@ -38,7 +38,7 @@ export function SidebarMenu() {
   return (
     <div className="h-screen overflow-auto sm:border-r lg:border-r ">
       <ScrollArea className="mb-16 rounded-md sm:w-full lg:w-48 ">
-        <div className="mt-2 sm:p-2 md:px-2">
+        <div className="mr-2 mt-2 sm:p-2 md:px-2">
           {uniqueLabels.map((label, index) => (
             <React.Fragment key={label}>
               {label && (
@@ -80,7 +80,7 @@ export function SidebarMenu() {
                                 className={clsx(
                                   'my-2 flex h-10 items-center rounded-md p-4 text-sm text-accent-foreground transition-colors hover:bg-accent hover:text-foreground md:h-9',
                                   {
-                                    'bg-accent text-black': segment === menu.href,
+                                    'bg-accent text-accent-foreground': segment === menu.href,
                                   },
                                 )}
                               >
@@ -98,7 +98,7 @@ export function SidebarMenu() {
                           className={clsx(
                             'my-2 flex h-10 items-center rounded-md p-4 text-sm text-accent-foreground transition-colors hover:bg-accent hover:text-foreground md:h-9',
                             {
-                              'bg-accent text-black': segment === menu.href,
+                              'bg-accent text-accent-foreground': segment === menu.href,
                             },
                           )}
                         >

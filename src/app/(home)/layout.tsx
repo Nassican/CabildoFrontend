@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Fragment } from 'react'; // Asegúrate de importar React
 
+import LoadingSpinner from '@/components/LoadingSpinner/Loading';
 import Navbar from '@/components/Navbar/Navbar';
 import { SidebarMenu } from '@/components/Sidebar/SideBar';
 import {
@@ -49,7 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     });
   };
 
-  if (status === 'loading') return <div>Loading...</div>;
+  if (status === 'loading') return <LoadingSpinner />;
   const pathnameLength = generateBreadcrumbs().length;
 
   return (
