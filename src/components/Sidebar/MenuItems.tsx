@@ -1,4 +1,4 @@
-import { Home, ListVideo, Mic2, Music, Play, RadioIcon, SquareStack, User2 } from 'lucide-react';
+import { GitFork, Home, ListVideo, Mic2, Music, Play, RadioIcon, SquareStack, User2 } from 'lucide-react';
 
 export const menuItems = [
   {
@@ -55,9 +55,15 @@ export const menuItems = [
     href: '/artists',
   },
   {
-    label: 'Users',
+    label: 'Administración',
     name: 'Perfil',
     icon: <User2 size={15} className="mr-2" />,
     href: '/profile',
+  },
+  {
+    label: 'Administración',
+    name: 'Roles',
+    icon: <GitFork size={15} className="mr-2" />,
+    href: '/roles',
   },
 ];

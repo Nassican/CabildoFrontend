@@ -60,7 +60,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="fixed hidden h-screen sm:block">
           <SidebarMenu />
         </div>
-        <main className="ml-0 w-full overflow-auto p-4 sm:ml-36 lg:ml-48">
+        <main className="ml-0 w-full overflow-auto p-4 sm:ml-48 lg:ml-48">
           <Breadcrumb className="mb-4 flex items-center">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -80,7 +80,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {generateBreadcrumbs()}
             </BreadcrumbList>
           </Breadcrumb>
-          <div>{children}</div>
+          <div className="ml-0 sm:mx-12 lg:mx-24">{children}</div>
         </main>
       </div>
     </div>

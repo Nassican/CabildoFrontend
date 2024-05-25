@@ -1,5 +1,3 @@
-'use client';
-
 import LogoImageDark from '@/public/images/CabildoLogo.webp';
 import LogoImageLight from '@/public/images/logo.webp';
 import { LockIcon, UserIcon } from 'lucide-react';
