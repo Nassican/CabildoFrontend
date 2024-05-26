@@ -1,36 +1,27 @@
-import React from 'react';
+// src/app/roles/page.tsx
+
+'use client';
+
+import React, { useRef } from 'react';
 
 import { CreateRoleSheet } from '@/components/Roles/CreateRole/create-role';
-import { columns, Payment } from '@/components/Roles/Table/columns';
-import { DataTableRole } from '@/components/Roles/Table/data-table';
+import TableRoles from '@/components/Roles/Table/TableRoles';
 import { Label } from '@/components/ui/label';
 
-import { DataTableDemo } from '../../../components/Roles/example';
+const RolesPage: React.FC = () => {
+  const tableRolesRef = useRef<{ fetchData: () => void }>(null);
 
-async function getData(): Promise<Payment[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: '728ed52f',
-      amount: 100,
-      status: 'pending',
-      email: 'm@example.com',
-    },
-    // ...
-  ];
-}
-
-const RolesPage: React.FC = async () => {
-  const data = await getData();
+  const handleRoleCreated = () => {
+    tableRolesRef.current?.fetchData();
+  };
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <Label className="">Administración de roles</Label>
-        <CreateRoleSheet />
+        <CreateRoleSheet onRoleCreated={handleRoleCreated} />
       </div>
-      <DataTableRole columns={columns} data={data} />
-      <DataTableDemo />
+      <TableRoles ref={tableRolesRef} />
     </div>
   );
 };
