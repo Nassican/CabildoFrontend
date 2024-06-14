@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
 import LoadingSpinner from '../LoadingSpinner/Loading';
+import withAuth from '../Utils/withAuth';
 
 const formSchema = z.object({
   num_documento: z.string().max(12, {
@@ -183,4 +184,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default withAuth(LoginForm);

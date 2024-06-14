@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { Plus } from 'lucide-react';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -11,27 +11,20 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Sheet,
-  //SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   //toast,
   useToast,
 } from '@/components/ui/use-toast';
 
 import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
+import { ResourceCheckbox } from '../ResourceItems/ResourceCheckbox';
 
 const formSchema = z.object({
   name: z.string().min(3, {
     message: 'El nombre debe por lo menos tener 3 caracteres',
   }),
+  recursosIds: z.array(z.number()),
 });
 
 interface CreateRoleSheetProps {
@@ -41,20 +34,46 @@ interface CreateRoleSheetProps {
 export function CreateRoleSheet({ onRoleCreated }: CreateRoleSheetProps) {
   const axiosAuth = useAxiosAuth();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [selectedResources, setSelectedResources] = useState<number[]>([]);
+  const [resources, setResources] = useState<{ id: number; nombre_recurso: string }[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchResources = async () => {
+      try {
+        const response = await axiosAuth.get('/resources');
+        setResources(response.data);
+
+        // Asegura que 'profile' esté seleccionado
+        const profileId = response.data.find((r: { nombre_recurso: string }) => r.nombre_recurso === 'profile')?.id;
+        if (profileId && !selectedResources.includes(profileId)) {
+          setSelectedResources((prev) => [...prev, profileId]);
+        }
+      } catch (error) {
+        console.error('Error al obtener los recursos:', error);
+      }
+    };
+
+    if (isSheetOpen) {
+      fetchResources();
+    }
+  }, [axiosAuth, isSheetOpen, selectedResources]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      recursosIds: [],
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      values.recursosIds = selectedResources;
+      console.log(values);
       const res = await axiosAuth.post('/roles', values);
       const message = `El rol "${res.data.name}" ha sido creado exitosamente`;
-      //console.log(res.data);
+      console.log(res.data);
       toast({
         title: 'Rol creado',
         description: message,
@@ -82,6 +101,12 @@ export function CreateRoleSheet({ onRoleCreated }: CreateRoleSheetProps) {
     }
   };
 
+  const handleToggleResource = (resourceId: number) => {
+    setSelectedResources((prev) =>
+      prev.includes(resourceId) ? prev.filter((id) => id !== resourceId) : [...prev, resourceId],
+    );
+  };
+
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
       <SheetTrigger asChild>
@@ -92,26 +117,44 @@ export function CreateRoleSheet({ onRoleCreated }: CreateRoleSheetProps) {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Crear nuevo rol</SheetTitle>
-          <SheetDescription>Escribe el nombre del nuevo rol que deseas crear</SheetDescription>
+          <SheetTitle className="mb-4">Crear nuevo rol</SheetTitle>
         </SheetHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
-                <>
-                  <div className="grid gap-4 py-4">
-                    <FormItem className="grid grid-cols-4 items-center gap-4">
-                      <FormLabel>Nombre</FormLabel>
-                      <FormControl>
-                        <Input id="name" className="col-span-3" {...field} />
-                      </FormControl>
-                    </FormItem>
-                    <FormMessage />
-                  </div>
-                </>
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input id="name" placeholder="Nuevo rol" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="recursosIds"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Recursos</FormLabel>
+                  <FormControl>
+                    {/* Checkboxes para los recursos */}
+                    <div>
+                      {resources.map((resource) => (
+                        <ResourceCheckbox
+                          key={resource.id}
+                          resource={resource}
+                          isChecked={selectedResources.includes(resource.id)}
+                          onToggle={handleToggleResource}
+                        />
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
             />
             <SheetFooter>

@@ -32,9 +32,10 @@ const ProfilePagePrincipal = () => {
       try {
         const res = await axiosAuth.get('/users/me');
         setUser(res.data);
-        console.log('res', res.data);
+        //console.log('res', res.data);
         setError(null);
       } catch (error) {
+        setError('Error al cargar el usuario');
         if (axios.isAxiosError(error)) {
           const axiosError = error as AxiosError<{ error: string }>;
           if (axiosError.response) {
@@ -52,9 +53,10 @@ const ProfilePagePrincipal = () => {
     return <LoadingSpinner />;
   }
 
-  if (error) {
-    return <ErrorCustom {...{ error }} />;
-  }
+  // if (error) {
+  //   console.log('error', error);
+  //   return <ErrorCustom {...{ error }} />;
+  // }
 
   // console.log('user', userResourcers);
 
@@ -104,6 +106,7 @@ const ProfilePagePrincipal = () => {
           </Card>
         </div>
       )}
+      {error && <ErrorCustom error={error} />}
     </div>
   );
 };

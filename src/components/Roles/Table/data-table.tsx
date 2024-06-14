@@ -14,6 +14,7 @@ import {
 } from '@tanstack/react-table';
 import axios, { AxiosError } from 'axios';
 import { ReactNode, useState } from 'react';
+import '@/types/table-types';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,6 +43,8 @@ export function DataTableRole<TData, TValue>({
   const axiosAuth = useAxiosAuth();
   const { toast } = useToast();
 
+  //console.log('data', data);
+
   const table = useReactTable({
     data,
     columns,
@@ -59,6 +62,12 @@ export function DataTableRole<TData, TValue>({
       columnFilters,
       columnVisibility,
       rowSelection,
+    },
+    meta: {
+      updateRole: async () => {
+        onRolesUpdated();
+        table.resetRowSelection();
+      },
     },
   });
   const handleDeleteRoles = async () => {
@@ -107,7 +116,7 @@ export function DataTableRole<TData, TValue>({
           placeholder="Filtrar nombres..."
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-          className="mr-2 max-w-sm"
+          className=""
         />
         {selectedRows.length > 0 && (
           <AlertDialogButton

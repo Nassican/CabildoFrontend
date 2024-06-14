@@ -4,7 +4,7 @@
 
 import React, { useRef } from 'react';
 
-import { CreateRoleSheet } from '@/components/Roles/CreateRole/create-role';
+import { CreateRoleSheet } from '@/components/Roles/RoleItems/create-role';
 import TableRoles from '@/components/Roles/Table/TableRoles';
 import { Label } from '@/components/ui/label';
 

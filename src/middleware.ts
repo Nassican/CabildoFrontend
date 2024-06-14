@@ -6,6 +6,8 @@ import type { NextRequest } from 'next/server';
 export async function middleware(req: NextRequest) {
   // Add your custom middleware here
   const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+
   //console.log("Session", session);
   if (!session) {
     const requestedPage = req.nextUrl.pathname;
@@ -20,7 +22,7 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/profile/:path*', '/'],
+  matcher: ['/dashboard/:path*', '/profile/:path*', '/roles/:path*', '/users/:path*', '/'],
 };
 
 // A better middleware for NextAuth.js

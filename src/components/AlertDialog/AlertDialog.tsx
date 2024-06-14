@@ -22,7 +22,9 @@ export const AlertDialogButton: React.FC<AlertDialogButtonProps> = ({ btnText, a
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="destructive">{btnText}</Button>
+        <Button variant="destructive" className="ml-2">
+          {btnText}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
