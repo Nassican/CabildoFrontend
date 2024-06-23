@@ -1,8 +1,6 @@
-// src/app/roles/page.tsx
-
 'use client';
 
-import { GitFork } from 'lucide-react';
+import { BoxIcon } from 'lucide-react';
 import React, { useRef } from 'react';
 
 import { CreateRoleSheet } from '@/components/Roles/RoleItems/create-role';
@@ -20,8 +18,8 @@ const RolesPage: React.FC = () => {
     <div>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <GitFork size={15} className="mr-2" />
-          <Label className="">Administración de roles</Label>
+          <BoxIcon size={15} className="mr-2" />
+          <Label>Administración de recursos</Label>
         </div>
         <CreateRoleSheet onRoleCreated={handleRoleCreated} />
       </div>

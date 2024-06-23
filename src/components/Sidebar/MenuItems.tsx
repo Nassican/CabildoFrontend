@@ -1,4 +1,4 @@
-import { GitFork, Home, ListVideo, Mic2, Music, Play, RadioIcon, SquareStack, User2 } from 'lucide-react';
+import { BoxIcon, GitFork, Home, ListVideo, Mic2, Music, Play, RadioIcon, SquareStack, User2 } from 'lucide-react';
 
 export const menuItems = [
   {
@@ -65,5 +65,11 @@ export const menuItems = [
     name: 'Roles',
     icon: <GitFork size={15} className="mr-2" />,
     href: '/roles',
+  },
+  {
+    label: 'Administración',
+    name: 'Recursos',
+    icon: <BoxIcon size={15} className="mr-2" />,
+    href: '/roles/recursos',
   },
 ];

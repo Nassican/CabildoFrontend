@@ -1,16 +1,19 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, PointerIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import '@/types/table-types';
+import { Label } from '@/components/ui/label';
 
 import { ResourceBadge } from '../ResourceItems/ResourceBadge';
 import { ResourcesModal } from '../ResourceItems/ResourcesModal';
 import { EditRoleSheet } from '../RoleItems/edit-role';
+
+import '@/types/table-types';
 
 export type Resource = {
   id: number;
@@ -59,7 +62,17 @@ export const columnsRole: ColumnDef<RoleTable>[] = [
   },
   {
     accessorKey: 'recursos',
-    header: 'Recursos',
+    header: () => (
+      <div className="flex items-center">
+        <Label>Recursos</Label>
+        <Button asChild variant="ghost" className="ml-4">
+          <Link href="/roles/recursos" className="cursor-pointer">
+            <PointerIcon size={15} className="mr-2" />
+            Administrar
+          </Link>
+        </Button>
+      </div>
+    ),
     cell: ({ row }) => {
       const role = row.original;
       const resources = role.recursos || [];
@@ -84,6 +97,7 @@ export const columnsRole: ColumnDef<RoleTable>[] = [
   },
   {
     id: 'actions',
+    header: 'Acciones',
     cell: ({ row, table }) => {
       const role = row.original;
 
